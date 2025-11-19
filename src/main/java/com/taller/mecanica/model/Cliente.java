@@ -27,13 +27,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Cliente {
 
     //atributos 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    
 
     @Column(nullable = false)
     private String nombre;
