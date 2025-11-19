@@ -1,14 +1,13 @@
 package com.taller.mecanica.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.taller.mecanica.model.Vehiculos;
-import com.taller.mecanica.repository.VehiculosRepository;
-
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.taller.mecanica.model.Vehiculo;
+import com.taller.mecanica.repository.VehiculoRepository;
 
 
 
@@ -17,14 +16,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 public class VehiculoController {
 
-    private final VehiculosRepository vehiculosRepository;
+    private final VehiculoRepository vehiculosRepository;
     
-    public VehiculoController(VehiculosRepository vehiculosRepository) {
+    public VehiculoController(VehiculoRepository vehiculosRepository) {
         this.vehiculosRepository = vehiculosRepository;
     }
 
     @GetMapping
-    public List<Vehiculos> listado() {
+    public List<Vehiculo> listado() {
         return vehiculosRepository.findAll();
     }
     

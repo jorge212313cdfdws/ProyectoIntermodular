@@ -1,11 +1,6 @@
 package com.taller.mecanica.model;
 
 //imports
-
-//imports de java.util -> Listas dinámicas 
-//imports de jakarta -> traducción de clases a tablas 
-//imports de lombok -> generan constructor, getters y setters automaticamente 
-
 import java.util.ArrayList;
 import java.util.List;
 

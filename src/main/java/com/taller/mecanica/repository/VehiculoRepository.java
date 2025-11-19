@@ -1,9 +1,10 @@
 package com.taller.mecanica.repository;
 
-import com.taller.mecanica.model.Vehiculos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.taller.mecanica.model.Vehiculo;
+
 @Repository
-public interface VehiculosRepository extends JpaRepository<Vehiculos, Long> {
+public interface VehiculoRepository extends JpaRepository<Vehiculo, Long> {
 }
