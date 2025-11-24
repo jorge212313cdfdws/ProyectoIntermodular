@@ -27,16 +27,17 @@ public class Cliente {
     //atributos 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long idCliente;
     
 
     @Column(nullable = false)
-    private String nombre;
+    private String nombreCompleto;
+
 
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false )
+    @Column(nullable = false)
     private String direccion; 
 
     //Listas:
