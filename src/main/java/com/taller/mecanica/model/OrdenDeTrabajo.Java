@@ -1,12 +1,19 @@
 package com.taller.mecanica.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Data
@@ -24,13 +31,18 @@ public class OrdenDeTrabajo {
 
     private double costoTotal;
 
-    // Relación con Cliente (N:1)
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    /*
-    // Ejemplo de relación muchos a muchos con Servicio
+    @ManyToOne
+    @JoinColumn(name = "id_mecanico")
+    private Mecanico mecanico;
+
+    @ManyToOne
+    @JoinColumn(name = "id_vehiculo")
+    private Vehiculo vehiculo;
+
     @ManyToMany
     @JoinTable(
         name = "orden_servicio",
@@ -38,5 +50,5 @@ public class OrdenDeTrabajo {
         inverseJoinColumns = @JoinColumn(name = "servicio_id")
     )
     private List<Servicio> servicios;
-    */
+
 }
