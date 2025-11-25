@@ -19,31 +19,29 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Vehiculo {
-    
+
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id; 
+    private Long id; 
 
     @Column(nullable = false)
     private String marca; 
 
-    @Column (nullable = false)
+    @Column(nullable = false)
     private String modelo; 
 
-    @Column (nullable = false)
+    @Column(nullable = false)
     private int año;
-    
-    @Column (nullable = false)
+
+    @Column(nullable = false)
     private String placa; 
 
-    // Relación con Cliente 
+    // Relación con Cliente (Dueño de la relación)
     @ManyToOne
-    @JoinColumn(name = "cliente_id") // FK en la tabla Vehiculo
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    //Relación con Orden de trabajo 
-    @OneToMany(mappedBy = "servicios")
+    // Relación con Orden de trabajo
+    @OneToMany(mappedBy = "vehiculo")
     private List<OrdenDeTrabajo> ordenes;
-
-    
 }

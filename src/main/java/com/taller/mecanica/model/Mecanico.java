@@ -23,7 +23,7 @@ public class Mecanico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    private long id_mecanico; 
+    private Long id_mecanico; 
 
     @Column (nullable = false)
     private String nombre; 

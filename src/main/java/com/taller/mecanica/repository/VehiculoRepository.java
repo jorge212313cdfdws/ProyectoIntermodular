@@ -7,4 +7,6 @@ import com.taller.mecanica.model.Vehiculo;
 
 @Repository
 public interface VehiculoRepository extends JpaRepository<Vehiculo, Long> {
+
+    //Aquí van los métodos personalizados en caso de que sean necesarios 
 }

@@ -18,7 +18,7 @@ public class Parte {
 
     @Id
     @GeneratedValue
-    private long id_parte; 
+    private Long id_parte; 
 
     @Column (nullable = false)
     private String nombre; 
