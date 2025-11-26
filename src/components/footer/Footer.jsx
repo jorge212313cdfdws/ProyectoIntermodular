@@ -1,10 +1,12 @@
 import React from 'react';
-import styles from './Footer.css';
+import './Footer.css';
 
 function Footer() {
   return (
-    <footer className={styles.footer}>
-      <p>© 2025 Taller Mecánico</p>
+    <footer className="footer">
+      <div className="footer-content">
+        <p>© 2025 Taller Mecánico</p>
+      </div>
     </footer>
   );
 }

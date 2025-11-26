@@ -1,11 +1,34 @@
+/* Header.css */
 .header {
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
-  background-color: #eee;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--background); /* de tus variables globales */
+  color: var(--foreground);
+  border-bottom: 1px solid var(--border);
 }
-nav a {
-  margin-left: 1rem;
+
+.header .logo {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-medium);
+}
+
+.nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-link {
   text-decoration: none;
-  color: #333;
+  color: var(--foreground);
+  font-weight: var(--font-weight-medium);
+}
+
+.nav-link.active {
+  color: var(--primary); /* color cuando está activo */
+}
+
+.nav-link:hover {
+  color: var(--secondary);
 }
