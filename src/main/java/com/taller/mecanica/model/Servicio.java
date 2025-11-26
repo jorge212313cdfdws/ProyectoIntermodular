@@ -22,7 +22,7 @@ public class Servicio {
     
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id_servicio; 
+    private Long Id; 
 
     @Column (nullable = false)
     private String nombre; 

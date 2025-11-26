@@ -12,18 +12,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Getter
 public class Mecanico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    private Long id_mecanico; 
+    private Long Id; 
 
     @Column (nullable = false)
     private String nombre; 
