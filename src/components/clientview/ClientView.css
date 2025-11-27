@@ -1,0 +1,124 @@
+.client-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.card-title {
+  font-size: 1.4rem;
+  margin-bottom: 5px;
+}
+
+.card-description {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.custom-select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.card-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  color: #0d6efd;
+}
+
+.info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.info-item {
+  display: flex;
+  gap: 10px;
+}
+
+.item-icon {
+  width: 18px;
+  height: 18px;
+  color: #555;
+}
+
+.label {
+  color: #666;
+  margin-bottom: 3px;
+}
+
+.vin {
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.empty {
+  color: #777;
+}
+
+.issue-card {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fafafa;
+  margin-bottom: 12px;
+}
+
+.issue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.badges {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.status, .priority {
+  padding: 5px 10px;
+  border-radius: 6px;
+  color: white;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.status.pending { background: orange; }
+.status.in-progress { background: dodgerblue; }
+.status.completed { background: seagreen; }
+
+.priority.low { background: slategray; }
+.priority.medium { background: orange; }
+.priority.high { background: red; }
+
+.issue-date {
+  margin-top: 10px;
+  display: flex;
+  gap: 6px;
+  color: #555;
+}
