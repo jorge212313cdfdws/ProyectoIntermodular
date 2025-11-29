@@ -1,32 +1,44 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { users } from "../../data/users";
-import { useAuth } from "../../context/AuthContext";
+import { fixedUsers } from "../../data/users"; // <-- import fijo
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
   const navigate = useNavigate();
 
-  function handleSubmit(e) {
+  const handleLogin = (e) => {
     e.preventDefault();
 
-    const user = users.find(
+    // Usuarios del localStorage
+    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Combinar con los fijos
+    const allUsers = [...fixedUsers, ...storedUsers];
+
+    const userFound = allUsers.find(
       (u) => u.username === username && u.password === password
     );
 
-    if (user) {
-      login(user.username, user.role); // simula login
-      if (user.role === "admin") navigate("/admin");
-      else navigate("/cliente");
-    } else {
+    if (!userFound) {
       alert("Usuario o contraseña incorrectos");
+      return;
     }
-  }
+
+    // Guardar sesión
+    localStorage.setItem("currentUser", JSON.stringify(userFound));
+
+    alert(`Bienvenido ${userFound.username}`);
+
+    if (userFound.role === "admin") {
+      navigate("/admin");
+    } else {
+      navigate("/cliente");
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleLogin}>
       <input
         type="text"
         placeholder="Usuario"

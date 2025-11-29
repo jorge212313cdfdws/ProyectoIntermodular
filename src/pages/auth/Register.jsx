@@ -1,38 +1,54 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
 
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth(); // para simular el registro
   const navigate = useNavigate();
 
-  function handleSubmit(e) {
-  e.preventDefault();
+  const handleRegister = (e) => {
+    e.preventDefault();
 
-  // Aquí solo simulamos que el registro fue exitoso, sin loguear
-  alert("Registro exitoso. Por favor, inicia sesión.");
-  navigate("/login"); // Redirige al login
-}
+    const users = JSON.parse(localStorage.getItem("users")) || [];
 
+    // Verificar si el usuario ya existe
+    const exists = users.some((u) => u.username === username);
+    if (exists) {
+      alert("El usuario ya existe");
+      return;
+    }
+
+    const newUser = {
+      username,
+      password,
+      role: "cliente"
+    };
+
+    users.push(newUser);
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("Registrado con éxito");
+    navigate("/login");
+  };
 
   return (
     <div>
       <h2>Registro de Usuario</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleRegister}>
         <input
           type="text"
           placeholder="Usuario"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
+
         <input
           type="password"
           placeholder="Contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+
         <button type="submit">Registrar</button>
       </form>
     </div>
