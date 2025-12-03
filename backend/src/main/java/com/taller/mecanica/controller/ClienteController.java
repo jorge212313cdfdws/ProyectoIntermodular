@@ -25,7 +25,7 @@ import com.taller.mecanica.repository.VehiculoRepository;
 @RestController
 @RequestMapping("/api/clientes")
 public class ClienteController {
-
+//implementar http status 
     @Autowired
     private ClienteRepository clienteRepository;
 
