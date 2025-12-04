@@ -1,7 +1,6 @@
 package com.taller.mecanica.model;
 
 //imports
-import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -34,7 +33,7 @@ public class Mecanico {
     
     
     @Column (nullable = false)
-    private LocalDate HorasTrabajadas; 
+    private int HorasTrabajadas; 
     
     @OneToMany(mappedBy = "mecanico")
     private List<OrdenDeTrabajo> ordenes;     

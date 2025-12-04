@@ -29,9 +29,11 @@ public class Cliente {
     private String email;
     private String direccion;
 
+    // Relación uno a muchos con Vehiculo
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Vehiculo> vehiculos;
 
+    // Colección de teléfonos
     @ElementCollection
     @CollectionTable(
         name = "cliente_telefonos",

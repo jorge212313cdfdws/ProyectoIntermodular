@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,7 +26,7 @@ import com.taller.mecanica.repository.VehiculoRepository;
 @RestController
 @RequestMapping("/api/clientes")
 public class ClienteController {
-//implementar http status 
+
     @Autowired
     private ClienteRepository clienteRepository;
 
@@ -34,70 +35,92 @@ public class ClienteController {
 
     // GET ALL
     @GetMapping
-    public List<Cliente> obtenerTodosLosClientes() {
-        return clienteRepository.findAll();
+    public ResponseEntity<List<Cliente>> obtenerTodosLosClientes() {
+        List<Cliente> clientes = clienteRepository.findAll();
+        return new ResponseEntity<>(clientes, HttpStatus.OK);
     }
 
     // CREATE
     @PostMapping
-    public Cliente crearCliente(@RequestBody Cliente cliente) {
-
-        Set<Vehiculo> vehiculos = cliente.getVehiculos();
-        if (vehiculos != null) {
-            for (Vehiculo v : vehiculos) {
-                if (v.getId() != 0) {
-                    Vehiculo vehiculoBD = vehiculoRepository.findById(v.getId())
-                            .orElseThrow(() -> new ResourceNotFoundException("Vehículo no encontrado"));
-                    v.setId(vehiculoBD.getId());
+    public ResponseEntity<?> crearCliente(@RequestBody Cliente cliente) {
+        try {
+            Set<Vehiculo> vehiculos = cliente.getVehiculos();
+            if (vehiculos != null) {
+                for (Vehiculo v : vehiculos) {
+                    if (v.getId() != 0) {
+                        Vehiculo vehiculoBD = vehiculoRepository.findById(v.getId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Vehículo no encontrado"));
+                        v.setId(vehiculoBD.getId());
+                    }
+                    v.setCliente(cliente);
                 }
-                v.setCliente(cliente); // asignar cliente
             }
+            Cliente nuevoCliente = clienteRepository.save(cliente);
+            return new ResponseEntity<>(nuevoCliente, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al crear cliente: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return clienteRepository.save(cliente);
     }
 
     // GET BY ID
     @GetMapping("/{id}")
-    public Cliente obtenerClientePorId(@PathVariable("id") Long id) {
-        return clienteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado"));
+    public ResponseEntity<?> obtenerClientePorId(@PathVariable("id") Long id) {
+        try {
+            Cliente cliente = clienteRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado"));
+            return new ResponseEntity<>(cliente, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al obtener cliente: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // UPDATE
     @PutMapping("/{id}")
-    public Cliente actualizarCliente(@PathVariable("id") Long id, @RequestBody Cliente detallesCliente) {
+    public ResponseEntity<?> actualizarCliente(@PathVariable("id") Long id, @RequestBody Cliente detallesCliente) {
+        try {
+            Cliente cliente = clienteRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado"));
 
-        Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado"));
+            cliente.setNombreCompleto(detallesCliente.getNombreCompleto());
+            cliente.setEmail(detallesCliente.getEmail());
+            cliente.setDireccion(detallesCliente.getDireccion());
 
-        cliente.setNombreCompleto(detallesCliente.getNombreCompleto());
-        cliente.setEmail(detallesCliente.getEmail());
-        cliente.setDireccion(detallesCliente.getDireccion());
-
-        // Manejo de vehículos
-        Set<Vehiculo> vehiculos = detallesCliente.getVehiculos();
-        if (vehiculos != null) {
-            for (Vehiculo v : vehiculos) {
-                if (v.getId() != 0) {
-                    Vehiculo vehiculoBD = vehiculoRepository.findById(v.getId())
-                            .orElseThrow(() -> new ResourceNotFoundException("Vehículo no encontrado"));
-                    v.setId(vehiculoBD.getId());
+            Set<Vehiculo> vehiculos = detallesCliente.getVehiculos();
+            if (vehiculos != null) {
+                for (Vehiculo v : vehiculos) {
+                    if (v.getId() != 0) {
+                        Vehiculo vehiculoBD = vehiculoRepository.findById(v.getId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Vehículo no encontrado"));
+                        v.setId(vehiculoBD.getId());
+                    }
+                    v.setCliente(cliente);
                 }
-                v.setCliente(cliente); // asignar cliente
+                cliente.setVehiculos(vehiculos);
             }
-            cliente.setVehiculos(vehiculos);
-        }
 
-        return clienteRepository.save(cliente);
+            Cliente clienteActualizado = clienteRepository.save(cliente);
+            return new ResponseEntity<>(clienteActualizado, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al actualizar cliente: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado"));
-        clienteRepository.delete(cliente);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        try {
+            Cliente cliente = clienteRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado"));
+            clienteRepository.delete(cliente);
+            return new ResponseEntity<>("Cliente eliminado correctamente", HttpStatus.NO_CONTENT);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al eliminar cliente: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
