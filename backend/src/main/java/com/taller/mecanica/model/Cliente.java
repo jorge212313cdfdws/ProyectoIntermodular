@@ -2,6 +2,8 @@ package com.taller.mecanica.model;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
@@ -31,6 +33,7 @@ public class Cliente {
 
     // Relación uno a muchos con Vehiculo
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("cliente") // Rompe el ciclo con Vehiculo
     private Set<Vehiculo> vehiculos;
 
     // Colección de teléfonos

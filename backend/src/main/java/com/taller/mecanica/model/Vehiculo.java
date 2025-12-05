@@ -2,6 +2,8 @@ package com.taller.mecanica.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,9 +41,11 @@ public class Vehiculo {
     // Relación con Cliente (Dueño de la relación)
     @ManyToOne
     @JoinColumn(name = "cliente_id")
+    @JsonIgnoreProperties("vehiculos") // Rompe el ciclo con Cliente
     private Cliente cliente;
 
     // Relación con Orden de trabajo
     @OneToMany(mappedBy = "vehiculo")
+    @JsonIgnoreProperties("vehiculo") // Rompe el ciclo con OrdenDeTrabajo
     private List<OrdenDeTrabajo> ordenes;
 }

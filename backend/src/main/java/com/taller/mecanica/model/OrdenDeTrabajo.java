@@ -3,6 +3,8 @@ package com.taller.mecanica.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,15 +37,15 @@ public class OrdenDeTrabajo {
     private double costoTotal;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_id")
+    @JsonIgnoreProperties({"vehiculos", "ordenesDeTrabajo"})
     private Cliente cliente;
 
     @ManyToOne
-    @JoinColumn(name = "id_mecanico")
+    @JsonIgnoreProperties("ordenes")
     private Mecanico mecanico;
 
     @ManyToOne
-    @JoinColumn(name = "id_vehiculo")
+    @JsonIgnoreProperties("ordenes")
     private Vehiculo vehiculo;
 
     @ManyToMany
