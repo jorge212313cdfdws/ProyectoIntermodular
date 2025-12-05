@@ -1,0 +1,33 @@
+.client-list-container {
+  padding: 20px;
+}
+
+.btn-primary {
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #217dbb;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+table th {
+  background: #e8e8e8;
+}

@@ -1,31 +1,27 @@
-// pages/ClientForm.jsx
+import React, { useState } from "react";
+import { createClient } from "../../services/ClientService";
+import "./ClientForm.css";
 
-import React, { useState } from 'react';
-import { createClient } from '../../services/ClientService';
-
-// Define el estado inicial del formulario
-const initialFormState = {
-  name: '',
-  phone: '',
-  email: '',
+const initialForm = {
+  nombreCompleto: "",
+  email: "",
+  direccion: "",
+  telefonos: ""
 };
 
-function ClientForm({ onSuccess, onCancel }) { // Propiedades opcionales para manejar el éxito o la cancelación
-  const [formData, setFormData] = useState(initialFormState);
+function ClientForm({ onSuccess, onCancel }) {
+  const [formData, setFormData] = useState(initialForm);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  // Maneja los cambios en los campos del formulario
   const handleChange = (e) => {
-    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value,
+      [e.target.name]: e.target.value
     }));
   };
 
-  // Maneja el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -33,75 +29,81 @@ function ClientForm({ onSuccess, onCancel }) { // Propiedades opcionales para ma
     setSuccess(false);
 
     try {
-      // Llamada a la API para crear el cliente
-      const newClient = await createClient(formData); 
-      
-      setSuccess(true);
-      setFormData(initialFormState); // Limpiar el formulario
-      console.log("Cliente creado con éxito:", newClient);
+      // Formato esperado por Spring Boot
+      const payload = {
+        nombreCompleto: formData.nombreCompleto,
+        email: formData.email,
+        direccion: formData.direccion,
+        telefonos: [formData.telefonos]
+      };
 
-      // Si se proporcionó una función onSuccess, la llamamos
-      if (onSuccess) {
-        onSuccess(newClient);
-      }
+      const newClient = await createClient(payload);
+      setSuccess(true);
+      setFormData(initialForm);
+
+      if (onSuccess) onSuccess(newClient);
 
     } catch (err) {
-      // Capturamos el error lanzado en el servicio
-      setError(err.message || "Ocurrió un error desconocido al crear el cliente.");
-      setSuccess(false);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h3>➕ Registrar Nuevo Cliente</h3>
-      
+    <div className="client-form-container">
+      <h3>Registrar Nuevo Cliente</h3>
+
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Nombre:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="phone">Teléfono:</label>
-          <input
-            type="tel" // Usamos tel para validación en el navegador
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
+        <label>Nombre Completo:</label>
+        <input
+          type="text"
+          name="nombreCompleto"
+          value={formData.nombreCompleto}
+          onChange={handleChange}
+          required
+        />
+
+        <label>Email:</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+
+        <label>Dirección:</label>
+        <input
+          type="text"
+          name="direccion"
+          value={formData.direccion}
+          onChange={handleChange}
+          required
+        />
+
+        <label>Teléfono:</label>
+        <input
+          type="text"
+          name="telefonos"
+          value={formData.telefonos}
+          onChange={handleChange}
+          required
+        />
 
         <button type="submit" disabled={loading}>
-          {loading ? 'Guardando...' : 'Guardar Cliente'}
+          {loading ? "Guardando..." : "Guardar Cliente"}
         </button>
-        
-        {/* Botón de Cancelar opcional */}
-        {onCancel && <button type="button" onClick={onCancel}>Cancelar</button>}
+
+        {onCancel && (
+          <button type="button" onClick={onCancel}>
+            Cancelar
+          </button>
+        )}
       </form>
 
-      {/* Mensajes de feedback */}
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-      {success && <p style={{ color: 'green' }}>Cliente registrado correctamente.</p>}
+      {error && <p className="error">{error}</p>}
+      {success && <p className="success">Cliente creado con éxito.</p>}
     </div>
   );
 }

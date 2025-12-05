@@ -1,8 +1,11 @@
 package com.taller.mecanica.model;
 
+import java.util.List;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.ArrayList;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -13,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,10 +35,10 @@ public class Cliente {
     private String email;
     private String direccion;
 
-    // Relación uno a muchos con Vehiculo
+    // Relación con Vehiculo
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("cliente") // Rompe el ciclo con Vehiculo
-    private Set<Vehiculo> vehiculos;
+    @JsonManagedReference
+    private List<Vehiculo> vehiculos = new ArrayList<>();
 
     // Colección de teléfonos
     @ElementCollection
@@ -42,5 +46,5 @@ public class Cliente {
         name = "cliente_telefonos",
         joinColumns = @JoinColumn(name = "cliente_id")
     )
-    private Set<String> telefonos;
+    private Set<String> telefonos = new HashSet<>();
 }

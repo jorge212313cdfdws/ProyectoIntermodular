@@ -1,17 +1,14 @@
 package com.taller.mecanica.model;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,30 +19,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Vehiculo {
 
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; 
+    private Long id;
 
-    @Column(nullable = false)
-    private String marca; 
-
-    @Column(nullable = false)
-    private String modelo; 
-
-    @Column(nullable = false)
+    private String marca;
+    private String modelo;
+    private String placa;
     private int año;
 
-    @Column(nullable = false)
-    private String placa; 
-
-    // Relación con Cliente (Dueño de la relación)
+    // Relación con Cliente
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    @JsonIgnoreProperties("vehiculos") // Rompe el ciclo con Cliente
+    @JsonBackReference
     private Cliente cliente;
-
-    // Relación con Orden de trabajo
-    @OneToMany(mappedBy = "vehiculo")
-    @JsonIgnoreProperties("vehiculo") // Rompe el ciclo con OrdenDeTrabajo
-    private List<OrdenDeTrabajo> ordenes;
 }

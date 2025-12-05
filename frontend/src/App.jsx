@@ -1,10 +1,10 @@
-import Clientes from "./components/Clientes";
+import ClientesList from "./components/clienteslist/ClientesList.jsx";
 
 function App() {
   return (
     <div>
-      <h1>CRUD de Clientes - React + Vite + Spring Boot</h1>
-      <Clientes />
+      <h1>Bienvenido al Taller</h1>
+      <ClientesList />
     </div>
   );
 }

@@ -60,6 +60,17 @@
             <artifactId>javaee-api</artifactId>
             <version>8.0.1</version>
         </dependency>
+
+        <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+             <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        
     </dependencies>
 
     <build>
