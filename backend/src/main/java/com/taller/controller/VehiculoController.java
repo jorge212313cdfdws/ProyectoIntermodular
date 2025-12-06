@@ -48,7 +48,7 @@ public class VehiculoController {
 
         vehiculo.setMarca(detallesVehiculo.getMarca());
         vehiculo.setModelo(detallesVehiculo.getModelo());
-        vehiculo.setMatricula(detallesVehiculo.getMatricula());
+        vehiculo.setPlaca(detallesVehiculo.getPlaca());
 
         return vehiculoRepository.save(vehiculo); 
     }
