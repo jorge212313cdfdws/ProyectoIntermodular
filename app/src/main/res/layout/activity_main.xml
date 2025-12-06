@@ -2,38 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/colorBackground"
     android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnCrearVehiculo"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Crear Vehículo" />
+        android:layout_marginBottom="32dp"
+        android:text="Gestión de Clientes"
+        android:textAppearance="?attr/textAppearanceHeadline4"
+        android:textColor="?attr/colorPrimary" />
 
-    <Button
-        android:id="@+id/btnVerVehiculos"
-        android:layout_width="wrap_content"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnVerClientes"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="16dp"
+        android:text="Ver Clientes"
+        android:textAppearance="?attr/textAppearanceButton"
+        app:icon="@android:drawable/ic_menu_view" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAnadirCliente"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Ver Vehículos" />
-
-    <Button
-        android:id="@+id/btnActualizarVehiculo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Actualizar Vehículo" />
-
-    <Button
-        android:id="@+id/btnEliminarVehiculo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Eliminar Vehículo" />
+        android:paddingVertical="16dp"
+        android:text="Añadir Nuevo Cliente"
+        android:textAppearance="?attr/textAppearanceButton"
+        app:icon="@android:drawable/ic_input_add" />
 
 </LinearLayout>

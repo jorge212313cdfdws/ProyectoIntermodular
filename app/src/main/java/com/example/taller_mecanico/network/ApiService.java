@@ -1,9 +1,7 @@
 package com.example.taller_mecanico.network;
 
-import com.example.taller_mecanico.model.Vehiculo;
-
+import com.example.taller_mecanico.model.Client;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -14,15 +12,20 @@ import retrofit2.http.Path;
 
 public interface ApiService {
 
-    @GET("vehiculos")
-    Call<List<Vehiculo>> getVehiculos();
+    // --- Rutas para Clientes ---
 
-    @POST("vehiculos")
-    Call<Vehiculo> createVehiculo(@Body Vehiculo vehiculo);
+    @GET("api/clientes")
+    Call<List<Client>> getClientes();
 
-    @PUT("vehiculos/{id}")
-    Call<Vehiculo> updateVehiculo(@Path("id") int id, @Body Vehiculo vehiculo);
+    @GET("api/clientes/{id}")
+    Call<Client> getClienteById(@Path("id") long id);
 
-    @DELETE("vehiculos/{id}")
-    Call<Void> deleteVehiculo(@Path("id") int id);
+    @POST("api/clientes")
+    Call<Client> createCliente(@Body Client client);
+
+    @PUT("api/clientes/{id}")
+    Call<Client> updateCliente(@Path("id") long id, @Body Client client);
+
+    @DELETE("api/clientes/{id}")
+    Call<Void> deleteCliente(@Path("id") long id);
 }

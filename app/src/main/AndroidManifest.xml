@@ -14,19 +14,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Taller_mecanico"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateVehicleActivity" />
-        <activity android:name=".ReadVehiclesActivity" />
-        <activity android:name=".UpdateVehicleActivity" />
-        <activity android:name=".DeleteVehicleActivity" />
+
+        <activity
+            android:name=".ReadClientsActivity"
+            android:label="Lista de Clientes" />
+
+        <activity
+            android:name=".CreateClientActivity"
+            android:label="Añadir Nuevo Cliente" />
+            
+        <activity
+            android:name=".UpdateClientActivity"
+            android:label="Actualizar Cliente" />
+
     </application>
 
 </manifest>
