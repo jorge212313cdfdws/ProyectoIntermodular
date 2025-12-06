@@ -1,0 +1,17 @@
+:root {
+  /* Palette approximada desde Figma (puedo ajustar cuando subas tokens) */
+  --primary: #2856F3; /* azul principal */
+  --primary-600: #1f46d6;
+  --accent: #FFB53D; /* acento naranja */
+  --bg: #F6F8FC;
+  --card-bg: #FFFFFF;
+  --muted: #6B7280;
+  --text: #0F1724;
+  --success: #1E6B31;
+  --error: #9B2C2C;
+  --border: #E6E9EE;
+  --radius: 12px;
+  --shadow: 0 6px 18px rgba(12, 24, 48, 0.06);
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --gap: 18px;
+}
