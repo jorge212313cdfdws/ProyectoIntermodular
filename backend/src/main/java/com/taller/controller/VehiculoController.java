@@ -17,7 +17,7 @@ import com.taller.exception.ResourceNotFoundException;
 import com.taller.model.Vehiculo;
 import com.taller.repository.VehiculoRepository;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/vehiculos")
 public class VehiculoController {

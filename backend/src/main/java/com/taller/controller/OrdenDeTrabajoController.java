@@ -20,7 +20,7 @@ import com.taller.repository.ServicioRepository;
 
 @RestController
 @RequestMapping("/api/ordenes")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class OrdenDeTrabajoController {
 
     @Autowired
