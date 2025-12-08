@@ -102,64 +102,140 @@ El frontend estará disponible en `http://localhost:3000`
 
 ## 🌐 Deployment
 
-**IMPORTANTE**: El proyecto se sube completo (raíz) a GitHub. Los servicios detectan automáticamente qué carpeta usar.
+### Estrategia de Deployment
 
-### Deploy Frontend en Vercel
+**GitHub**: Sube TODO el proyecto completo (raíz)  
+**Railway**: Backend + PostgreSQL (usa carpeta `backend/`)  
+**Vercel**: Solo Frontend (usa carpeta `frontend/`)
 
-1. **Subir TODO el proyecto a GitHub** (no solo frontend)
-2. **Ir a Vercel** → New Project → Import Git Repository
-3. **Configurar:**
-   - **Root Directory**: `frontend` ⚠️ (Vercel trabajará solo con esta carpeta)
-   - **Framework Preset**: Vite
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
-4. **Variable de entorno:**
+---
+
+### PASO 1: Subir a GitHub
+
+```bash
+# Estando en la raíz del proyecto
+git push origin Jorge
+```
+
+---
+
+### PASO 2: Deploy Backend + Base de Datos (Railway)
+
+#### 2.1. Crear base de datos PostgreSQL
+
+1. Ir a [railway.app](https://railway.app) → **New Project**
+2. **Provision PostgreSQL**
+   - Railway genera automáticamente:
+     - `DATABASE_URL`
+     - `POSTGRES_USER`
+     - `POSTGRES_PASSWORD`
+   - ✅ No necesitas configurar nada más
+
+#### 2.2. Deploy del Backend
+
+1. En el mismo proyecto de Railway → **New Service**
+2. **GitHub Repo** → Selecciona `ProyectoIntermodular`
+3. **Configuración importante:**
    ```
-   VITE_API_URL=https://tu-backend.railway.app
+   Root Directory: backend
    ```
-5. Deploy!
+   ⚠️ Railway DEBE apuntar solo a la carpeta backend
+4. Railway detecta automáticamente que es Java/Maven
 
-### Deploy Backend + Base de Datos en Railway
+#### 2.3. Variables de entorno en Railway
 
-1. **Subir TODO el proyecto a GitHub** (ya está)
-2. **Ir a Railway.app** → New Project
-3. **Provisionar PostgreSQL**:
-   - Add Service → Database → PostgreSQL
-   - Railway crea automáticamente: `DATABASE_URL`, `POSTGRES_USER`, `POSTGRES_PASSWORD`
+En el servicio del backend, agrega:
 
-4. **Deploy Backend**:
-   - Add Service → GitHub Repo → Tu repositorio
-   - **Root Directory**: `backend` ⚠️ (Railway trabajará solo con esta carpeta)
-   - Railway detecta automáticamente Java/Maven
+```bash
+JWT_SECRET=clave_muy_segura_cambiar_por_256_bits_aleatorios
+SPRING_SQL_INIT_MODE=always
+CORS_ALLOWED_ORIGINS=http://localhost:3000
+```
 
-5. **Variables de entorno en Railway**:
-   ```bash
-   # Las de base de datos YA están creadas automáticamente
-   
-   # Agregar estas:
-   JWT_SECRET=clave_super_segura_cambiar_por_algo_aleatorio_256_bits
-   SPRING_SQL_INIT_MODE=always
-   CORS_ALLOWED_ORIGINS=http://localhost:3000,https://TU_URL_VERCEL.vercel.app
+⚠️ **Nota**: Actualizaremos `CORS_ALLOWED_ORIGINS` después de deployar en Vercel
+
+#### 2.4. Obtener URL del backend
+
+- Railway asigna una URL tipo: `https://proyectointermodular-production-xxxx.up.railway.app`
+- **Cópiala**, la necesitarás para Vercel
+
+---
+
+### PASO 3: Deploy Frontend (Vercel)
+
+#### 3.1. Crear proyecto en Vercel
+
+1. Ir a [vercel.com](https://vercel.com) → **New Project**
+2. **Import Git Repository** → Selecciona tu repo de GitHub
+3. **Configuración CRÍTICA:**
+   ```
+   Framework Preset:  Vite
+   Root Directory:    frontend    ← ⚠️ MUY IMPORTANTE
+   Build Command:     npm run build
+   Output Directory:  dist
    ```
 
-6. **Copiar URL del backend**: `https://tu-backend.up.railway.app`
+#### 3.2. Variables de entorno en Vercel
 
-7. **Actualizar Vercel**:
-   - Settings → Environment Variables
-   - `VITE_API_URL` = `https://tu-backend.up.railway.app`
-
-### ¿Por qué funciona así?
+Agrega esta variable:
 
 ```
-GitHub Repository (ProyectoIntermodular/)
-├── backend/          ← Railway apunta aquí (Root Directory: backend)
-├── frontend/         ← Vercel apunta aquí (Root Directory: frontend)
-├── create_db.sql
-└── README.md
+Name:  VITE_API_URL
+Value: https://proyectointermodular-production-xxxx.up.railway.app
+```
 
-Vercel solo ve:    frontend/*
-Railway solo ve:   backend/*
-GitHub tiene:      TODO el proyecto
+(Usa la URL que copiaste de Railway)
+
+#### 3.3. Deploy
+
+Click en **Deploy** y espera ~2 minutos
+
+---
+
+### PASO 4: Actualizar CORS
+
+#### 4.1. Obtener URL de Vercel
+
+Después del deploy, Vercel te da una URL tipo:
+```
+https://proyecto-intermodular-xxxx.vercel.app
+```
+
+#### 4.2. Actualizar Railway
+
+1. Ve a Railway → Tu servicio backend → **Variables**
+2. Actualiza `CORS_ALLOWED_ORIGINS`:
+   ```
+   http://localhost:3000,https://proyecto-intermodular-xxxx.vercel.app
+   ```
+3. Railway hace redeploy automáticamente
+
+---
+
+### PASO 5: ¡Probar!
+
+1. Abre tu URL de Vercel
+2. Login con: `admin@taller.com` / `admin123`
+3. ✅ ¡Funciona!
+
+---
+
+### 📊 Arquitectura Final
+
+```
+┌─────────────────────────────────────┐
+│  Usuario                             │
+│    │                                 │
+│    ├─► Vercel (Frontend)             │
+│    │   https://tu-proyecto.vercel.app│
+│    │   └─ React + Vite               │
+│    │                                 │
+│    └─► Railway (Backend)             │
+│        https://xxxxx.railway.app     │
+│        ├─ Spring Boot               │
+│        └─► PostgreSQL (Railway)      │
+│            └─ Datos de data.sql      │
+└─────────────────────────────────────┘
 ```
 
 ### Alternativa: Todo en Railway
@@ -202,39 +278,60 @@ También puedes deployar el frontend en Railway:
 ### Checklist de Deployment:
 
 ```bash
-# 1. Preparar repositorio
-git add .
-git commit -m "Proyecto listo para deployment"
+# ☑️ PASO 1: GitHub
 git push origin Jorge
 
-# 2. Railway (Backend + BD)
-□ Ir a railway.app
-□ New Project → PostgreSQL
-□ Add Service → GitHub Repo (TODO el repo)
+# ☑️ PASO 2: Railway (Backend + BD)
+□ railway.app → New Project
+□ Provision PostgreSQL
+□ New Service → GitHub Repo
 □ Root Directory: backend
-□ Configurar variables:
-  - JWT_SECRET
-  - SPRING_SQL_INIT_MODE=always
-  - CORS_ALLOWED_ORIGINS=http://localhost:3000,https://TU_URL.vercel.app
+□ Variables:
+  JWT_SECRET=clave_segura_256_bits
+  SPRING_SQL_INIT_MODE=always
+  CORS_ALLOWED_ORIGINS=http://localhost:3000
 □ Copiar URL: https://xxxxx.up.railway.app
 
-# 3. Vercel (Frontend)
-□ Ir a vercel.com
-□ New Project → Import de GitHub (TODO el repo)
+# ☑️ PASO 3: Vercel (Frontend)
+□ vercel.com → New Project
+□ Import Git Repository
 □ Root Directory: frontend
 □ Framework: Vite
 □ Variable: VITE_API_URL=https://xxxxx.up.railway.app
 □ Deploy
+□ Copiar URL: https://xxxxx.vercel.app
 
-# 4. Actualizar CORS
-□ En Railway, actualizar CORS_ALLOWED_ORIGINS con URL de Vercel
-□ Push a GitHub para redeploy automático
+# ☑️ PASO 4: Actualizar CORS
+□ Railway → Variables
+□ CORS_ALLOWED_ORIGINS=http://localhost:3000,https://xxxxx.vercel.app
+□ Esperar redeploy automático
 
-# 5. Probar
-□ Abrir https://tu-proyecto.vercel.app
-□ Login con: admin@taller.com / admin123
-□ ✅ ¡Funciona!
+# ☑️ PASO 5: Probar
+□ Abrir https://xxxxx.vercel.app
+□ Login: admin@taller.com / admin123
+□ ✅ ¡Listo!
 ```
+
+---
+
+### 🔧 Troubleshooting
+
+**Error: "CORS policy blocked"**
+- Verifica que `CORS_ALLOWED_ORIGINS` en Railway tenga tu URL de Vercel
+- Espera 1-2 minutos para que Railway redeploy
+
+**Error: "Cannot connect to database"**
+- Railway genera automáticamente las variables de BD
+- No necesitas configurar `DATABASE_URL` manualmente
+
+**Error: "Login failed"**
+- Verifica que `VITE_API_URL` en Vercel apunte a Railway
+- Comprueba que `SPRING_SQL_INIT_MODE=always` esté en Railway
+
+**Frontend deploy exitoso pero pantalla blanca**
+- Verifica que Root Directory sea `frontend`
+- Comprueba que Build Command sea `npm run build`
+- Output Directory debe ser `dist`
 
 ## 📁 Estructura del Proyecto
 
