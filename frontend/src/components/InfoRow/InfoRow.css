@@ -1,0 +1,20 @@
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.label {
+  font-weight: 500;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.value {
+  color: #1a202c;
+  font-weight: 400;
+  text-align: right;
+}

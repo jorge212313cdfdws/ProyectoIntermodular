@@ -1,0 +1,58 @@
+.vehiculo-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #3498db;
+}
+
+.vehiculo-card h2 {
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vehiculo-card .icon {
+  font-size: 1.8rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row .label {
+  font-weight: 600;
+  color: #34495e;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-row .value {
+  color: #2c3e50;
+  text-align: right;
+  font-weight: 500;
+}
+
+.no-data {
+  padding: 2rem;
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.loading-small {
+  padding: 2rem;
+  text-align: center;
+  color: #3498db;
+}
