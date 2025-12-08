@@ -8,10 +8,12 @@ import Register from './pages/auth/Register'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import ClienteDashboard from './pages/cliente/ClienteDashboard'
 import MecanicoDashboard from './pages/mecanico/MecanicoDashboard'
+import ToastContainer from './components/Toast/ToastContainer'
 
 function App() {
   return (
     <div className="app-container">
+      <ToastContainer />
       <Header />
       <main className="main-content">
         <Routes>

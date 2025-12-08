@@ -9,7 +9,7 @@ function VehiculoDashboard({ clienteId }) {
   useEffect(() => {
     const fetchVehiculos = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/clientes/${clienteId}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/clientes/${clienteId}`);
         
         if (response.ok) {
           const data = await response.json();

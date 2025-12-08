@@ -1,6 +1,0 @@
-
-> frontend@0.0.0 dev
-> vite --open
-
-""node"" no se reconoce como un comando interno o externo,
-programa o archivo por lotes ejecutable.

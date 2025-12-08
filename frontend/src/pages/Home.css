@@ -37,3 +37,28 @@
   border: none;
   border-radius: 8px;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .home-container {
+    padding: 1rem;
+    gap: 2rem;
+  }
+
+  .cards-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .full-image {
+    height: 300px;
+  }
+
+  .map-iframe {
+    height: 300px;
+  }
+
+  .home-title {
+    font-size: 1.25rem;
+  }
+}
