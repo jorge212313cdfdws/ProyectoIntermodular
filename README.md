@@ -450,4 +450,4 @@ Este proyecto es parte de un trabajo académico para DAD (Desarrollo de Aplicaci
 
 ## 👨‍💻 Autor
 
-Jorge - ProyectoIntermodular
+Jorge y Brian - ProyectoIntermodular
