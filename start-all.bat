@@ -1,2 +1,2 @@
-concurrently "cd backend && mvnw.cmd spring-boot:run" "cd frontend && npm run dev -- --open"
+concurrently "cd backend && mvn spring-boot:run" "cd frontend && npm run dev -- --open"
 pause
