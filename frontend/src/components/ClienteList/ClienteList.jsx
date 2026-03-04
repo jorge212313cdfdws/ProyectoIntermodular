@@ -32,10 +32,13 @@ function ClienteList({ clientes, onEdit, onDelete }) {
                 </button>
               </div>
             </div>
+
+            {/* Sección de vehículos */}
             {cliente.vehiculos && cliente.vehiculos.length > 0 && (
               <div className="vehiculos-section">
                 <p className="vehiculos-label">Vehículos:</p>
                 {cliente.vehiculos.map((vehiculo) => (
+                  // Añadimos key único también aquí
                   <p key={vehiculo.id} className="vehiculo-info">
                     {vehiculo.marca} {vehiculo.modelo} ({vehiculo.placa})
                   </p>
@@ -44,6 +47,8 @@ function ClienteList({ clientes, onEdit, onDelete }) {
             )}
           </div>
         ))}
+        
+        {/* Mensaje si no hay clientes */}
         {clientes.length === 0 && <p>No hay clientes registrados</p>}
       </div>
     </div>
