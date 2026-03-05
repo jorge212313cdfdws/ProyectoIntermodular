@@ -444,6 +444,122 @@ public void addCorsMappings(CorsRegistry registry) {
 2. Verifica que el directorio root sea `frontend`
 3. Confirma que el output directory sea `dist`
 
+## 🧪 Testing
+
+### Requisitos / Setup
+
+- Node.js LTS recomendado (18+)
+- npm 9+
+- Dependencias instaladas con `npm install`
+
+### Cómo ejecutar tests
+
+Desde la carpeta `frontend`:
+
+```bash
+# Ejecutar todos los tests una vez
+npm test
+
+# Ejecutar tests en modo watch (se actualiza automáticamente)
+npm run test:watch
+
+# Ejecutar con reporte de cobertura
+npm run test:coverage
+
+# Ejecutar un archivo específico
+npx vitest src/tests/logic.test.jsx
+
+# Ejecutar tests por patrón de nombre
+npx vitest -t "isValidClient"
+```
+
+### Estructura y convención de archivos
+
+```
+frontend/src/tests/
+├── Card.test.jsx              # Tests de componentes (UI)
+├── ClienteList.test.jsx       # Tests de componentes (UI)
+├── logic.test.jsx             # Tests de lógica/utilidades
+└── useCrudOperations.test.js  # Tests de hooks (API)
+```
+
+**Convención:** `*.test.jsx` para tests de componentes, `*.test.js` para hooks/lógica
+
+### Qué se está testeando
+
+| Archivo | Tipo | Qué testea |
+|---------|------|-----------|
+| `logic.test.jsx` | Lógica | Validación de clientes, suma de vehículos |
+| `Card.test.jsx` | Componente | Renderizado de títulos y contenido |
+| `ClienteList.test.jsx` | Componente | Listado, callbacks (onEdit, onDelete) |
+| `useCrudOperations.test.js` | Hook + API | Requests HTTP (POST, PUT, DELETE) con mocks |
+
+### Cobertura
+
+```bash
+# Generar reporte de cobertura
+npm run test:coverage
+
+# El reporte se genera en coverage/ (ignorado en git)
+# Métricas principales: lines, branches, functions, statements
+
+# Objetivo: mantener cobertura > 70% en lógica crítica
+```
+
+### Guía para escribir tests - Principio AAA
+
+**Estructura:** Arrange → Act → Assert
+
+```javascript
+// Ejemplo real del proyecto (logic.test.jsx)
+it('debería retornar false si falta email del cliente', () => {
+  // ARRANGE: Preparar datos
+  const cliente = { nombreCompleto: 'Juan', email: '', direccion: 'Calle 123' };
+
+  // ACT: Ejecutar la función
+  const resultado = isValidClient(cliente);
+
+  // ASSERT: Verificar el resultado
+  expect(resultado).toBe(false);
+});
+```
+
+### Mocks y aislamiento
+
+**Para tests de API/hooks:**
+
+```javascript
+// Mock de fetch para aislar la API real
+beforeEach(() => {
+  global.fetch = vi.fn();
+  localStorage.setItem('authToken', 'test-token');
+});
+
+afterEach(() => {
+  vi.clearAllMocks();  // Limpiar mocks entre tests
+  localStorage.clear();
+});
+
+// Mock de módulos externos
+vi.mock('../components/Toast/ToastContainer', () => ({
+  showToast: vi.fn()
+}));
+```
+
+**Limpieza automática:**
+- `afterEach()` ejecuta `vi.clearAllMocks()` para aislar cada test
+- `localStorage.clear()` limpia datos entre tests
+- Cada test comienza sin estado de tests anteriores
+
+### Troubleshooting
+
+| Problema | Solución |
+|----------|----------|
+| `ReferenceError: fetch is not defined` | Agregar `global.fetch = vi.fn()` en beforeEach |
+| `localStorage is not defined` | Tests en jsdom ya tienen localStorage nativo |
+| `Cannot find module '@testing-library/react'` | Ejecutar `npm install` en la carpeta frontend |
+| Los tests pasan pero fallan en CI/CD | Asegúrate que `npm test` devuelva exit code 0 |
+
 ## 📄 Licencia
 
 Este proyecto es parte de un trabajo académico para DAD (Desarrollo de Aplicaciones Distribuidas).
