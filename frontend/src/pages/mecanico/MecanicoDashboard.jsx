@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./MecanicoDashboard.css";
+import Modal from "../../components/Modal/Modal";
+import OrdenForm from "../../components/Forms/OrdenForm";
+import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog";
 import ClienteList from "../../components/ClienteList/ClienteList";
 import VehiculoList from "../../components/VehiculoList/VehiculoList";
 import OrdenList from "../../components/OrdenList/OrdenList";
@@ -7,13 +11,38 @@ import { useAdminData } from "../../hooks/useAdminData";
 
 function MecanicoDashboard() {
   const [activeTab, setActiveTab] = useState("clientes");
-  
+  const [showModal, setShowModal] = useState(false);
+  const [editingOrden, setEditingOrden] = useState(null);
+  const navigate = useNavigate();
+
   const {
     clientes,
     vehiculos,
     ordenes,
-    loading
+    loading,
+    confirmDialog,
+    handleOrden,
   } = useAdminData();
+
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser || currentUser.role !== "mecanico") {
+      navigate("/");
+    }
+  }, [navigate]);
+
+  const handleOpenModal = (orden = null) => {
+    setEditingOrden(orden);
+    setShowModal(true);
+  };
+
+  const handleSubmitOrden = async (ordenData) => {
+    const success = await handleOrden.create(ordenData, editingOrden);
+    if (success) {
+      setShowModal(false);
+      setEditingOrden(null);
+    }
+  };
 
   if (loading) {
     return <div>Cargando...</div>;
@@ -24,29 +53,28 @@ function MecanicoDashboard() {
       <div className="mecanico-content">
         <div className="panel-trabajador">
           <h2>Panel de Trabajador</h2>
-          <p className="panel-subtitle">Gesti�n y mantenimiento de Clientes/Coches</p>
-          
+          <p className="panel-subtitle">Gestión y mantenimiento del Taller</p>
+
           <div className="action-buttons">
-            <button className="action-btn">+ Nuevo Cliente</button>
-            <button className="action-btn">+ Nuevo Coche</button>
-            <button className="action-btn">+ Asignar Coche</button>
-            <button className="action-btn">+ Nueva Issue</button>
+            <button className="action-btn" onClick={() => handleOpenModal()}>
+              + Nueva Issue
+            </button>
           </div>
 
           <div className="tabs">
-            <button 
+            <button
               className={activeTab === "clientes" ? "tab active" : "tab"}
               onClick={() => setActiveTab("clientes")}
             >
               Clientes
             </button>
-            <button 
+            <button
               className={activeTab === "coches" ? "tab active" : "tab"}
               onClick={() => setActiveTab("coches")}
             >
               Coches
             </button>
-            <button 
+            <button
               className={activeTab === "issue" ? "tab active" : "tab"}
               onClick={() => setActiveTab("issue")}
             >
@@ -57,15 +85,15 @@ function MecanicoDashboard() {
           {activeTab === "clientes" && (
             <div className="content-section">
               <h3>Lista de Clientes</h3>
-              <p className="section-subtitle">Gesti�n de clientes/Vehiculos</p>
+              <p className="section-subtitle">Vista de solo lectura</p>
               <ClienteList clientes={clientes} />
             </div>
           )}
 
           {activeTab === "coches" && (
             <div className="content-section">
-              <h3>Lista de Veh�culos</h3>
-              <p className="section-subtitle">Gesti�n de Cambios y Reparaci�n</p>
+              <h3>Lista de Vehículos</h3>
+              <p className="section-subtitle">Vista de solo lectura</p>
               <VehiculoList vehiculos={vehiculos} ordenes={ordenes} />
             </div>
           )}
@@ -74,11 +102,33 @@ function MecanicoDashboard() {
             <div className="content-section">
               <h3>Lista de Issues</h3>
               <p className="section-subtitle">Problemas Registrados en el Taller</p>
-              <OrdenList ordenes={ordenes} />
+              <OrdenList
+                ordenes={ordenes}
+                onEdit={(orden) => handleOpenModal(orden)}
+                onDelete={handleOrden.delete}
+              />
             </div>
           )}
         </div>
       </div>
+
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <OrdenForm
+          onSubmit={handleSubmitOrden}
+          onCancel={() => setShowModal(false)}
+          vehiculos={vehiculos}
+          clientes={clientes}
+          initialData={editingOrden}
+        />
+      </Modal>
+
+      {confirmDialog && (
+        <ConfirmDialog
+          message={confirmDialog.message}
+          onConfirm={confirmDialog.onConfirm}
+          onCancel={confirmDialog.onCancel}
+        />
+      )}
     </div>
   );
 }

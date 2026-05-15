@@ -5,7 +5,7 @@ function Carousel() {
   const images = [
     'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1200&h=600&fit=crop',
     'https://images.unsplash.com/photo-1625047509168-a7026f36de04?w=1200&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1632823469724-6d3d9b7c7070?w=1200&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=600&fit=crop',
     'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=1200&h=600&fit=crop',
     'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=1200&h=600&fit=crop'
   ];
