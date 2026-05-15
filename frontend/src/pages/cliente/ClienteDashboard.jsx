@@ -5,10 +5,10 @@ import "./ClienteDashboard.css";
 
 function ClienteDashboard() {
   const [clienteData, setClienteData] = useState(null);
+  const [ordenes, setOrdenes] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Obtener usuario logueado del localStorage
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     
     if (!currentUser || !currentUser.id) {
@@ -21,8 +21,15 @@ function ClienteDashboard() {
       return;
     }
 
-    // Usar los datos del localStorage
     setClienteData(currentUser);
+
+    const token = localStorage.getItem("authToken");
+    fetch(`${import.meta.env.VITE_API_URL}/api/ordenes/cliente/${currentUser.id}`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    })
+      .then(res => res.ok ? res.json() : [])
+      .then(data => setOrdenes(Array.isArray(data) ? data : []))
+      .catch(() => setOrdenes([]));
   }, [navigate]);
 
   const handleLogout = () => {
@@ -69,9 +76,26 @@ function ClienteDashboard() {
             <span className="icon">🔧</span> Historial de Reparaciones y Cambios
           </h2>
           <p className="subtitle-historial">Mantenimiento del Vehículo</p>
-          <div className="no-data">
-            <p>No hay servicios registrados aún</p>
-          </div>
+          {ordenes.length === 0 ? (
+            <div className="no-data">
+              <p>No hay servicios registrados aún</p>
+            </div>
+          ) : (
+            <div className="ordenes-list">
+              {ordenes.map(orden => (
+                <div key={orden.id} className="orden-item">
+                  <div className="orden-header">
+                    <span className="orden-fecha">{orden.fechaCreacion || 'Sin fecha'}</span>
+                    <span className="orden-costo">{orden.costoTotal > 0 ? `${orden.costoTotal} €` : 'Sin coste'}</span>
+                  </div>
+                  <p className="orden-descripcion">{orden.descripcion || 'Sin descripción'}</p>
+                  {orden.vehiculo && (
+                    <p className="orden-vehiculo">🚗 {orden.vehiculo.marca} {orden.vehiculo.modelo} - {orden.vehiculo.placa}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

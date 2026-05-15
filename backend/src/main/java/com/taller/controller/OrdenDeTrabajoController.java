@@ -43,6 +43,11 @@ public class OrdenDeTrabajoController {
         return ordenRepository.findAll();
     }
 
+    @GetMapping("/cliente/{clienteId}")
+    public List<OrdenDeTrabajo> getOrdenesByCliente(@PathVariable Long clienteId) {
+        return ordenRepository.findByClienteId(clienteId);
+    }
+
     @GetMapping("/{id}")
     public OrdenDeTrabajo getOrdenById(@PathVariable Long id) {
         return ordenRepository.findById(id)
