@@ -34,6 +34,12 @@ public class ClienteService {
             cliente.setNombreCompleto(clienteDetails.getNombreCompleto());
             cliente.setEmail(clienteDetails.getEmail());
             cliente.setDireccion(clienteDetails.getDireccion());
+            if (clienteDetails.getRole() != null) {
+                cliente.setRole(clienteDetails.getRole());
+            }
+            if (clienteDetails.getPassword() != null && !clienteDetails.getPassword().isEmpty()) {
+                cliente.setPassword(clienteDetails.getPassword());
+            }
             if (clienteDetails.getVehiculos() != null) {
                 cliente.setVehiculos(clienteDetails.getVehiculos());
             }
