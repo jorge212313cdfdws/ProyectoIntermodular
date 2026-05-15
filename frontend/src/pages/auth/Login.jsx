@@ -28,9 +28,6 @@ function Login({ onClose }) {
 
       const data = await response.json();
 
-      console.log('Respuesta del servidor:', data);
-      console.log('Response OK?:', response.ok);
-
       if (!response.ok) {
         setError(data.message || 'Error al iniciar sesión');
         setLoading(false);
@@ -40,13 +37,6 @@ function Login({ onClose }) {
       // Login exitoso
       setSuccess(data.message || 'Iniciando sesión...');
       
-      console.log('Guardando usuario en localStorage:', {
-        id: data.id,
-        email: data.email,
-        role: data.role,
-        nombreCompleto: data.nombreCompleto
-      });
-      
       // Guardar token y datos del usuario en localStorage
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("currentUser", JSON.stringify({
@@ -55,8 +45,6 @@ function Login({ onClose }) {
         role: data.role,
         nombreCompleto: data.nombreCompleto
       }));
-
-      console.log('Usuario guardado, verificando:', localStorage.getItem('currentUser'));
 
       // Esperar un momento para mostrar el mensaje
       setTimeout(() => {

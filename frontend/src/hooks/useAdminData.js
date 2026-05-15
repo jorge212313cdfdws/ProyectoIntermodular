@@ -5,6 +5,7 @@ export const useAdminData = () => {
   const [clientes, setClientes] = useState([]);
   const [vehiculos, setVehiculos] = useState([]);
   const [ordenes, setOrdenes] = useState([]);
+  const [mecanicos, setMecanicos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [confirmDialog, setConfirmDialog] = useState(null);
 
@@ -20,21 +21,19 @@ export const useAdminData = () => {
     try {
       setLoading(true);
 
-      const [clientesRes, vehiculosRes, ordenesRes] = await Promise.all([
-        fetch(`${API_BASE}/clientes`, { headers: { "Authorization": `Bearer ${token}` } }),
-        fetch(`${API_BASE}/vehiculos`, { headers: { "Authorization": `Bearer ${token}` } }),
-        fetch(`${API_BASE}/ordenes`, { headers: { "Authorization": `Bearer ${token}` } })
+      const results = await Promise.allSettled([
+        fetch(`${API_BASE}/clientes`,  { headers: { "Authorization": `Bearer ${token}` } }).then(r => r.json()),
+        fetch(`${API_BASE}/vehiculos`, { headers: { "Authorization": `Bearer ${token}` } }).then(r => r.json()),
+        fetch(`${API_BASE}/ordenes`,   { headers: { "Authorization": `Bearer ${token}` } }).then(r => r.json()),
+        fetch(`${API_BASE}/mecanicos`, { headers: { "Authorization": `Bearer ${token}` } }).then(r => r.json())
       ]);
 
-      const [clientesData, vehiculosData, ordenesData] = await Promise.all([
-        clientesRes.json(),
-        vehiculosRes.json(),
-        ordenesRes.json()
-      ]);
+      const [clientesResult, vehiculosResult, ordenesResult, mecanicosResult] = results;
 
-      setClientes(clientesData);
-      setVehiculos(vehiculosData);
-      setOrdenes(ordenesData);
+      if (clientesResult.status === "fulfilled")  setClientes(clientesResult.value);
+      if (vehiculosResult.status === "fulfilled") setVehiculos(vehiculosResult.value);
+      if (ordenesResult.status === "fulfilled")   setOrdenes(ordenesResult.value);
+      if (mecanicosResult.status === "fulfilled") setMecanicos(mecanicosResult.value);
       setLoading(false);
     } catch (error) {
       console.error("Error al cargar datos:", error);
@@ -49,17 +48,17 @@ export const useAdminData = () => {
   // CRUD genérico
   const createOrUpdate = async (endpoint, data, entityName, editingItem) => {
     try {
-      const url = editingItem 
+      const url = editingItem
         ? `${API_BASE}/${endpoint}/${editingItem.id}`
         : `${API_BASE}/${endpoint}`;
       const method = editingItem ? "PUT" : "POST";
-      
+
       const response = await fetch(url, {
         method,
         headers,
         body: JSON.stringify(data)
       });
-      
+
       if (response.ok) {
         await fetchData();
         showToast(
@@ -88,7 +87,7 @@ export const useAdminData = () => {
               method: "DELETE",
               headers: { "Authorization": `Bearer ${token}` }
             });
-            
+
             if (response.ok) {
               await fetchData();
               showToast(`${entityName} eliminado correctamente`, "success");
@@ -110,7 +109,6 @@ export const useAdminData = () => {
     });
   };
 
-  // Handlers específicos
   const handleCliente = {
     create: (data, editingItem) => createOrUpdate("clientes", data, "Cliente", editingItem),
     delete: (id) => deleteEntity("clientes", id, "Cliente")
@@ -126,16 +124,23 @@ export const useAdminData = () => {
     delete: (id) => deleteEntity("ordenes", id, "Orden")
   };
 
+  const handleMecanico = {
+    create: (data, editingItem) => createOrUpdate("mecanicos", data, "Mecánico", editingItem),
+    delete: (id) => deleteEntity("mecanicos", id, "Mecánico")
+  };
+
   return {
     clientes,
     vehiculos,
     ordenes,
+    mecanicos,
     loading,
     confirmDialog,
     setConfirmDialog,
     handleCliente,
     handleVehiculo,
     handleOrden,
+    handleMecanico,
     fetchData
   };
 };

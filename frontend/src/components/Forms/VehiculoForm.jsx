@@ -45,7 +45,7 @@ function VehiculoForm({ onSubmit, onCancel, clientes, initialData }) {
   return (
     <div className="form-container">
       <h2>{initialData ? "Editar Vehículo" : "Crear nuevo Vehículo"}</h2>
-      <p className="form-subtitle">Carros y sus Vehiculos</p>
+      <p className="form-subtitle">{initialData ? "Modificar vehículo existente" : "Registrar nuevo vehículo"}</p>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Marca:</label>

@@ -95,7 +95,6 @@ function ClienteForm({ onSubmit, onCancel, initialData }) {
           >
             <option value="cliente">Cliente</option>
             <option value="admin">Administrador</option>
-            <option value="mecanico">Mecánico</option>
           </select>
         </div>
 

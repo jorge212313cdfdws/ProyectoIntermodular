@@ -25,12 +25,6 @@ function ClienteDashboard() {
     setClienteData(currentUser);
   }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("currentUser");
-    localStorage.removeItem("authToken");
-    navigate("/");
-  };
-
   if (!clienteData) {
     return <div className="loading">Cargando...</div>;
   }
@@ -40,7 +34,6 @@ function ClienteDashboard() {
       <header className="cliente-header">
         <h1>Su Vehículo</h1>
         <p className="subtitle">Sistema de Gestión de Vehículos</p>
-        <button onClick={handleLogout} className="logout-btn">Cerrar sesión</button>
       </header>
 
       <div className="cliente-content">

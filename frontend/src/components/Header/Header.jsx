@@ -16,14 +16,11 @@ function Header() {
     // Verificar si hay usuario logueado cada vez que cambia la ubicación
     const checkUser = () => {
       const user = localStorage.getItem('currentUser');
-      console.log('Header verificando usuario:', user);
       if (user) {
         try {
           const parsedUser = JSON.parse(user);
-          console.log('Usuario parseado en Header:', parsedUser);
           setCurrentUser(parsedUser);
         } catch (error) {
-          console.error('Error parsing user:', error);
           localStorage.removeItem('currentUser');
           setCurrentUser(null);
         }
@@ -53,10 +50,6 @@ function Header() {
     window.dispatchEvent(new Event('user-login'));
   };
 
-  console.log('Estado actual del usuario:', currentUser);
-  console.log('¿currentUser existe?:', !!currentUser);
-  console.log('¿Role es admin?:', currentUser?.role === 'admin');
-
   return (
     <>
       <header className="header">
@@ -69,12 +62,8 @@ function Header() {
             </>
           ) : (
             <>
-              {console.log('Renderizando opciones de usuario logueado')}
               {currentUser.role === 'admin' && (
-                <>
-                  {console.log('Renderizando enlace Operaciones')}
-                  <NavLink to="/admin" className="nav-link">Operaciones</NavLink>
-                </>
+                <NavLink to="/admin" className="nav-link">Operaciones</NavLink>
               )}
               {currentUser.role === 'mecanico' && (
                 <NavLink to="/mecanico" className="nav-link">Panel Mecánico</NavLink>
