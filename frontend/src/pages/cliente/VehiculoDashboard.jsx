@@ -9,7 +9,10 @@ function VehiculoDashboard({ clienteId }) {
   useEffect(() => {
     const fetchVehiculos = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/clientes/${clienteId}`);
+        const token = localStorage.getItem("authToken");
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/clientes/${clienteId}`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
         
         if (response.ok) {
           const data = await response.json();
