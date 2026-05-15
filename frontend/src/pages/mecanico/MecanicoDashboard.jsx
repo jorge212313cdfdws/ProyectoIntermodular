@@ -83,31 +83,19 @@ function MecanicoDashboard() {
           </div>
 
           {activeTab === "clientes" && (
-            <div className="content-section">
-              <h3>Lista de Clientes</h3>
-              <p className="section-subtitle">Vista de solo lectura</p>
-              <ClienteList clientes={clientes} />
-            </div>
+            <ClienteList clientes={clientes} />
           )}
 
           {activeTab === "coches" && (
-            <div className="content-section">
-              <h3>Lista de Vehículos</h3>
-              <p className="section-subtitle">Vista de solo lectura</p>
-              <VehiculoList vehiculos={vehiculos} ordenes={ordenes} />
-            </div>
+            <VehiculoList vehiculos={vehiculos} ordenes={ordenes} />
           )}
 
           {activeTab === "issue" && (
-            <div className="content-section">
-              <h3>Lista de Issues</h3>
-              <p className="section-subtitle">Problemas Registrados en el Taller</p>
-              <OrdenList
-                ordenes={ordenes}
-                onEdit={(orden) => handleOpenModal(orden)}
-                onDelete={handleOrden.delete}
-              />
-            </div>
+            <OrdenList
+              ordenes={ordenes}
+              onEdit={(orden) => handleOpenModal(orden)}
+              onDelete={handleOrden.delete}
+            />
           )}
         </div>
       </div>

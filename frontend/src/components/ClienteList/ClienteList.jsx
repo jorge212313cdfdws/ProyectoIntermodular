@@ -15,22 +15,24 @@ function ClienteList({ clientes, onEdit, onDelete }) {
                   <p className="cliente-direccion">📍 {cliente.direccion}</p>
                 </div>
               </div>
-              <div className="cliente-actions">
-                <button 
-                  className="edit-btn" 
-                  onClick={() => onEdit(cliente)}
-                  title="Editar cliente"
-                >
-                  ✏️
-                </button>
-                <button 
-                  className="delete-btn" 
-                  onClick={() => onDelete(cliente.id)}
-                  title="Eliminar cliente"
-                >
-                  🗑️
-                </button>
-              </div>
+              {onEdit && onDelete && (
+                <div className="cliente-actions">
+                  <button
+                    className="edit-btn"
+                    onClick={() => onEdit(cliente)}
+                    title="Editar cliente"
+                  >
+                    ✏️
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => onDelete(cliente.id)}
+                    title="Eliminar cliente"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Sección de vehículos */}

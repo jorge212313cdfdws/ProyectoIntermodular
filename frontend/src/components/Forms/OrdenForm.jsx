@@ -79,7 +79,7 @@ function OrdenForm({ onSubmit, onCancel, vehiculos, clientes, initialData }) {
         </div>
 
         <div className="form-group">
-          <label>Mecánico:</label>
+          <label>Cliente:</label>
           <select
             name="clienteId"
             value={formData.cliente.id}

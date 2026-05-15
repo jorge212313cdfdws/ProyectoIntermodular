@@ -13,20 +13,24 @@ function VehiculoList({ vehiculos, ordenes, onEdit, onDelete }) {
                 <span>{vehiculo.marca} {vehiculo.modelo} ({vehiculo.placa})</span>
                 <div>
                   <button className="estado-btn activo">Activo</button>
-                  <button 
-                    className="edit-btn" 
-                    onClick={() => onEdit(vehiculo)}
-                    title="Editar vehículo"
-                  >
-                    ✏️
-                  </button>
-                  <button 
-                    className="delete-btn" 
-                    onClick={() => onDelete(vehiculo.id)}
-                    title="Eliminar vehículo"
-                  >
-                    🗑️
-                  </button>
+                  {onEdit && onDelete && (
+                    <>
+                      <button
+                        className="edit-btn"
+                        onClick={() => onEdit(vehiculo)}
+                        title="Editar vehículo"
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        className="delete-btn"
+                        onClick={() => onDelete(vehiculo.id)}
+                        title="Eliminar vehículo"
+                      >
+                        🗑️
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
               <div className="vehiculo-details">
